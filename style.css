@@ -27,7 +27,7 @@
 }
 
 .display-text {
-
+    font-size: 25px;
 }
 
 .calc-buttons {
@@ -40,4 +40,5 @@
 .calc-buttons button {
     height: 70px;
     width: 78px;
+    font-size: 22px;
 }
