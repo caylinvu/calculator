@@ -1,0 +1,43 @@
+.main-container {
+    display: flex;
+    justify-content: center;
+    padding-top: 100px;
+}
+
+.calc-container {
+    display: flex;
+    flex-direction: column;
+    border: solid black 2px;
+    border-radius: 20px;
+    height: 550px;
+    width: 350px;
+    padding: 30px;
+    gap: 20px;
+    flex-basis: auto;
+}
+
+.display {
+    border: solid black 2px;
+    border-radius: 10px;
+    height: 150px;
+    display: flex;
+    justify-content: end;
+    align-items: flex-end;
+    padding: 20px;
+}
+
+.display-text {
+
+}
+
+.calc-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.calc-buttons button {
+    height: 70px;
+    width: 78px;
+}
