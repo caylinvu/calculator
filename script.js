@@ -1,3 +1,7 @@
+const displayText = document.querySelector('.display-text');
+const numberButtons = document.querySelectorAll('.number');
+let displayValue = '0';
+
 function add(num1, num2) {
     return num1 + num2;
 }
@@ -25,3 +29,16 @@ function operate(operator, num1, num2) {
         return divide(num1, num2);
     }
 }
+
+function populateNumbers() {
+    numberButtons.forEach((button) => {
+        button.addEventListener('click', function (e) {
+            if (displayValue.length < 14) {
+                displayText.textContent += e.target.textContent;
+                displayValue = displayText.textContent.toString();
+            }
+        });
+    });
+}
+
+populateNumbers();

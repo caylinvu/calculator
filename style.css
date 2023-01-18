@@ -23,11 +23,13 @@
     display: flex;
     justify-content: end;
     align-items: flex-end;
-    padding: 20px;
+    padding-right: 25px;
+    padding-left: 25px;
+    padding-bottom: 20px;
 }
 
 .display-text {
-    font-size: 25px;
+    font-size: 40px;
 }
 
 .calc-buttons {
