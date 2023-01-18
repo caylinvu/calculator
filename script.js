@@ -8,6 +8,8 @@ let num2 = '';
 let operator = '';
 let result = '';
 let isCompleteNumber = false;
+let isFirstNumber = true;
+let isSecondNumber = false;
 
 function add(num1, num2) {
     return num1 + num2;
@@ -57,18 +59,45 @@ populateNumbers();
 
 operatorButtons.forEach((button) => {
     button.addEventListener('click', function (e) {
-        operator = e.target.textContent;
-        num1 = displayValue;
-        isCompleteNumber = true;
-        console.log(operator);
-        console.log(num1);
-        
-        equalButton.addEventListener('click', function (e) {
-            num2 = displayValue;
+        if (isFirstNumber) {
+            operator = e.target.textContent;
+            num1 = Number(displayText.textContent);
+            isCompleteNumber = true;
+            isFirstNumber = false;
+            isSecondNumber = true;
+            console.log(num1);
+            console.log(operator);
+        } else if (isSecondNumber) {
+            num2 = Number(displayText.textContent);
             console.log(num2);
             result = operate(operator, num1, num2);
+            console.log(result);
             displayText.textContent = result;
-        });
+            isCompleteNumber = true;
+            isSecondNumber = false;
+            operator = e.target.textContent;
+            num1 = result;
+        } else {
+            num2 = Number(displayText.textContent);
+            console.log("num1: " + num1);
+            console.log("num2: " + num2);
+            console.log(operator);
+            result = operate(operator, num1, num2);
+            displayText.textContent = result;
+            isCompleteNumber = true;
+            operator = e.target.textContent;
+            console.log(operator);
+            num1 = result;
+        }
     });
 });
 
+equalButton.addEventListener('click', function (e) {
+    console.log(num1);
+    num2 = Number(displayText.textContent);
+    console.log(num2);
+    result = operate(operator, num1, num2);
+    displayText.textContent = result;
+    console.log(result);
+    isFirstNumber = true;
+});
