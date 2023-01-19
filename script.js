@@ -3,7 +3,7 @@ const numberButtons = document.querySelectorAll('.number');
 const operatorButtons = document.querySelectorAll('.operator');
 const equalButton = document.querySelector('.equals');
 const allClearButton = document.querySelector('.all-clear');
-const clearButton = document.querySelector('.clear');
+const backspaceButton = document.querySelector('.backspace');
 const percentButton = document.querySelector('.percent');
 const negateButton = document.querySelector('.negate');
 const decimalButton = document.querySelector('.decimal');
@@ -127,7 +127,7 @@ allClearButton.addEventListener('click', () => {
     displayText.textContent = '';
 });
 
-clearButton.addEventListener('click', () => {
+backspaceButton.addEventListener('click', () => {
     displayText.textContent = displayText.textContent.slice(0, (displayText.textContent.length - 1));
 });
 
@@ -138,6 +138,8 @@ percentButton.addEventListener('click', () => {
 negateButton.addEventListener('click', () => {
     if (!displayText.textContent || displayText.textContent == '0') {
         displayText.textContent = '-0';
+    } else if (displayText.textContent == '-') {
+        displayText.textContent = '0';
     } else if (displayText.textContent) {
         displayText.textContent = -(displayText.textContent);
     }
@@ -156,14 +158,20 @@ decimalButton.addEventListener('click', () => {
     }
 });
 
-// make negate button -0 if clicked first
-
 // round results to 14 places
 
 // display message if try to divide by 0
+
+// if second number is negative, fix so that when you click the operator and then the negate button, it starts a new "-0" number
 
 // fix issue if changing operator after typing first number
 
 // add starting 0 if choosing operator first
 
 // maybe fix issue with typing a number after hitting 0
+
+// add view at top showing current equation
+
+// change clear button to clear current number
+
+// add keyboard support
