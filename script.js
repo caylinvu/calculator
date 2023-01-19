@@ -8,8 +8,9 @@ let num2 = '';
 let operator = '';
 let result = '';
 let isCompleteNumber = false;
-let isFirstNumber = true;
-let isSecondNumber = false;
+let isFirstEquation = true;
+let isSecondEquation = false;
+let isRepeatedEqual = false;
 
 function add(num1, num2) {
     return num1 + num2;
@@ -59,22 +60,23 @@ populateNumbers();
 
 operatorButtons.forEach((button) => {
     button.addEventListener('click', function (e) {
-        if (isFirstNumber) {
+        isRepeatedEqual = false;
+        if (isFirstEquation) {
             operator = e.target.textContent;
             num1 = Number(displayText.textContent);
             isCompleteNumber = true;
-            isFirstNumber = false;
-            isSecondNumber = true;
+            isFirstEquation = false;
+            isSecondEquation = true;
             console.log(num1);
             console.log(operator);
-        } else if (isSecondNumber) {
+        } else if (isSecondEquation) {
             num2 = Number(displayText.textContent);
             console.log(num2);
             result = operate(operator, num1, num2);
             console.log(result);
             displayText.textContent = result;
             isCompleteNumber = true;
-            isSecondNumber = false;
+            isSecondEquation = false;
             operator = e.target.textContent;
             num1 = result;
         } else {
@@ -93,11 +95,20 @@ operatorButtons.forEach((button) => {
 });
 
 equalButton.addEventListener('click', function (e) {
-    console.log(num1);
-    num2 = Number(displayText.textContent);
-    console.log(num2);
-    result = operate(operator, num1, num2);
-    displayText.textContent = result;
-    console.log(result);
-    isFirstNumber = true;
+    if (!isRepeatedEqual) {
+        console.log(num1);
+        num2 = Number(displayText.textContent);
+        console.log(num2);
+        result = operate(operator, num1, num2);
+        displayText.textContent = result;
+        console.log(result);
+        isFirstEquation = true;
+        isRepeatedEqual = true;
+    } else if (isRepeatedEqual) {
+        num1 = result;
+        result = operate(operator, num1, num2);
+        displayText.textContent = result;
+    }
+
+    //isCompleteNumber = true;
 });
