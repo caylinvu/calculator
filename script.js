@@ -128,6 +128,10 @@ percentButton.addEventListener('click', () => {
     displayText.textContent = displayText.textContent / 100;
 });
 
+negateButton.addEventListener('click', () => {
+    displayText.textContent = -(displayText.textContent);
+});
+
 // round results to 14 places
 
 // display message if try to divide by 0
