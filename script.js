@@ -55,8 +55,14 @@ function populateNumbers() {
                 isCompleteNumber = false;
             }
             if (displayValue.length < 14) {
-                displayText.textContent += e.target.textContent;
-                displayValue = displayText.textContent.toString();
+                if (displayText.textContent == '-0') {
+                    displayText.textContent = `-${e.target.textContent}`;
+                } else if (displayText.textContent == '0') {
+                    displayText.textContent = e.target.textContent;
+                } else {
+                    displayText.textContent += e.target.textContent;
+                    displayValue = displayText.textContent.toString();
+                }
             }
         });
     });
@@ -130,7 +136,11 @@ percentButton.addEventListener('click', () => {
 });
 
 negateButton.addEventListener('click', () => {
-    displayText.textContent = -(displayText.textContent);
+    if (!displayText.textContent || displayText.textContent == '0') {
+        displayText.textContent = '-0';
+    } else if (displayText.textContent) {
+        displayText.textContent = -(displayText.textContent);
+    }
 });
 
 decimalButton.addEventListener('click', () => {
