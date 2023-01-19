@@ -19,22 +19,31 @@ let isSecondEquation = false;
 let isRepeatedEqual = false;
 
 function add(num1, num2) {
-    return num1 + num2;
+    return roundResult(num1 + num2);
 }
 
 function subtract(num1, num2) {
-    return num1 - num2;
+    return roundResult(num1 - num2);
 }
 
 function multiply(num1, num2) {
-    return num1 * num2;
+    return roundResult(num1 * num2);
 }
 
 function divide(num1, num2) {
-    return num1 / num2;
+    return roundResult(num1 / num2);
+}
+
+function roundResult(number) {
+    finalResult = Math.round(number * 1000) / 1000;
+    stringResult = finalResult.toString();
+    if (stringResult.length > 14) return 'Number is too big';
+    return finalResult;
 }
 
 function operate(operator, num1, num2) {
+    console.log("num1 " + num1);
+    console.log("num2 " + num2);
     if (operator === '+') {
         return add(num1, num2);
     } else if (operator === '-') {
@@ -42,6 +51,7 @@ function operate(operator, num1, num2) {
     } else if (operator === 'x') {
         return multiply(num1, num2);
     } else if (operator === '/') {
+        if (num2 == '0') return "Can't divide by 0";
         return divide(num1, num2);
     }
 }
@@ -150,17 +160,15 @@ decimalButton.addEventListener('click', () => {
         if (!displayText.textContent.includes('.')) {
             if (!displayText.textContent) {
                 displayText.textContent = "0.";
-            } else displayText.textContent += '.';
+            } else {
+                displayText.textContent += '.';
+            }
         }
     } else if (isCompleteNumber) {
         displayText.textContent = "0.";
         isCompleteNumber = false;
     }
 });
-
-// round results to 14 places
-
-// display message if try to divide by 0
 
 // if second number is negative, fix so that when you click the operator and then the negate button, it starts a new "-0" number
 
@@ -175,3 +183,5 @@ decimalButton.addEventListener('click', () => {
 // change clear button to clear current number
 
 // add keyboard support
+
+// rearrage buttons on calculator
