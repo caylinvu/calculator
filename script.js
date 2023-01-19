@@ -2,6 +2,11 @@ const displayText = document.querySelector('.display-text');
 const numberButtons = document.querySelectorAll('.number');
 const operatorButtons = document.querySelectorAll('.operator');
 const equalButton = document.querySelector('.equals');
+const allClearButton = document.querySelector('.all-clear');
+const clearButton = document.querySelector('.clear');
+const percentButton = document.querySelector('.percent');
+const negateButton = document.querySelector('.negate');
+
 let displayValue = '0';
 let num1 = '';
 let num2 = '';
@@ -67,13 +72,9 @@ operatorButtons.forEach((button) => {
             isCompleteNumber = true;
             isFirstEquation = false;
             isSecondEquation = true;
-            console.log(num1);
-            console.log(operator);
         } else if (isSecondEquation) {
             num2 = Number(displayText.textContent);
-            console.log(num2);
             result = operate(operator, num1, num2);
-            console.log(result);
             displayText.textContent = result;
             isCompleteNumber = true;
             isSecondEquation = false;
@@ -81,14 +82,10 @@ operatorButtons.forEach((button) => {
             num1 = result;
         } else {
             num2 = Number(displayText.textContent);
-            console.log("num1: " + num1);
-            console.log("num2: " + num2);
-            console.log(operator);
             result = operate(operator, num1, num2);
             displayText.textContent = result;
             isCompleteNumber = true;
             operator = e.target.textContent;
-            console.log(operator);
             num1 = result;
         }
     });
@@ -96,12 +93,9 @@ operatorButtons.forEach((button) => {
 
 equalButton.addEventListener('click', function (e) {
     if (!isRepeatedEqual) {
-        console.log(num1);
         num2 = Number(displayText.textContent);
-        console.log(num2);
         result = operate(operator, num1, num2);
         displayText.textContent = result;
-        console.log(result);
         isFirstEquation = true;
         isRepeatedEqual = true;
     } else if (isRepeatedEqual) {
@@ -110,5 +104,36 @@ equalButton.addEventListener('click', function (e) {
         displayText.textContent = result;
     }
 
-    //isCompleteNumber = true;
+    isCompleteNumber = true;
 });
+
+allClearButton.addEventListener('click', () => {
+    displayValue = '0';
+    num1 = '';
+    num2 = '';
+    operator = '';
+    result = '';
+    isCompleteNumber = false;
+    isFirstEquation = true;
+    isSecondEquation = false;
+    isRepeatedEqual = false;
+    displayText.textContent = '';
+});
+
+clearButton.addEventListener('click', () => {
+    displayText.textContent = displayText.textContent.slice(0, (displayText.textContent.length - 1));
+});
+
+percentButton.addEventListener('click', () => {
+    displayText.textContent = displayText.textContent / 100;
+});
+
+// round results to 14 places
+
+// display message if try to divide by 0
+
+// fix issue if changing operator after typing first number
+
+// add starting 0 if choosing operator first
+
+// maybe fix issue with typing a number after hitting 0
