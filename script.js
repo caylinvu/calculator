@@ -134,10 +134,19 @@ negateButton.addEventListener('click', () => {
 });
 
 decimalButton.addEventListener('click', () => {
-    if (!displayText.textContent.includes('.')) {
-        displayText.textContent += '.';
+    if (!isCompleteNumber) {
+        if (!displayText.textContent.includes('.')) {
+            if (!displayText.textContent) {
+                displayText.textContent = "0.";
+            } else displayText.textContent += '.';
+        }
+    } else if (isCompleteNumber) {
+        displayText.textContent = "0.";
+        isCompleteNumber = false;
     }
 });
+
+// make negate button -0 if clicked first
 
 // round results to 14 places
 
