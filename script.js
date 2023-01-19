@@ -6,6 +6,7 @@ const allClearButton = document.querySelector('.all-clear');
 const clearButton = document.querySelector('.clear');
 const percentButton = document.querySelector('.percent');
 const negateButton = document.querySelector('.negate');
+const decimalButton = document.querySelector('.decimal');
 
 let displayValue = '0';
 let num1 = '';
@@ -130,6 +131,12 @@ percentButton.addEventListener('click', () => {
 
 negateButton.addEventListener('click', () => {
     displayText.textContent = -(displayText.textContent);
+});
+
+decimalButton.addEventListener('click', () => {
+    if (!displayText.textContent.includes('.')) {
+        displayText.textContent += '.';
+    }
 });
 
 // round results to 14 places
