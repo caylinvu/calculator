@@ -83,6 +83,39 @@ function populateNumbers() {
 
 populateNumbers();
 
+function onClick(button) {
+    button.style.backgroundColor = 'black';
+}
+
+document.addEventListener('keydown', function (e) {
+    if (e.key >= 0 && e.key <= 9) {
+        isOperationLocked = true;
+        if (isCompleteNumber) {
+            displayText.textContent = '';
+            displayValue = '0';
+            isCompleteNumber = false;
+        }
+        if (displayValue.length < 14) {
+            if (displayText.textContent == '-0') {
+                displayText.textContent = `-${e.key}`;
+            } else if (displayText.textContent == '0') {
+                displayText.textContent = e.key;
+            } else {
+                displayText.textContent += e.key;
+                displayValue = displayText.textContent.toString();
+            }
+        }      
+    }
+
+    for (const button of numberButtons.values()) {
+        if (e.key == button.id) {
+            console.log(button.id);
+            button.onclick = onClick(button);
+        }
+    }
+});
+
+
 operatorButtons.forEach((button) => {
     button.addEventListener('click', function (e) {
         isRepeatedEqual = false;
@@ -131,7 +164,6 @@ operatorButtons.forEach((button) => {
             isFirstEquation = true;
             isSecondEquation = false;
             result = '';
-            num2 = '';
         } else equationText.textContent = num1 + " " + operator;
     });
 });
@@ -145,7 +177,6 @@ equalButton.addEventListener('click', function (e) {
         if (result == "Number is too big" || result == "Can't divide by 0") {
             equationText.textContent = '';
             result = '';
-            num2 = '';
         } else if (tempNum2.includes("-")) {
             equationText.textContent += " (" + num2 + ") =";
         } else equationText.textContent += " " + num2 + " =";
@@ -213,10 +244,6 @@ decimalButton.addEventListener('click', () => {
         isCompleteNumber = false;
     }
 });
-
-// add view at top showing current equation
-
-// update to start over if get number is too big or can't divide by 0
 
 // add keyboard support
 
