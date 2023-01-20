@@ -150,6 +150,11 @@ negateButton.addEventListener('click', () => {
         displayText.textContent = '-0';
     } else if (displayText.textContent == '-') {
         displayText.textContent = '0';
+    } else if (isCompleteNumber && isFirstEquation) {
+        displayText.textContent = -(displayText.textContent);
+    } else if (isCompleteNumber && !isFirstEquation) {
+        displayText.textContent = '-0';
+        isCompleteNumber = false;
     } else if (displayText.textContent) {
         displayText.textContent = -(displayText.textContent);
     }
@@ -170,18 +175,14 @@ decimalButton.addEventListener('click', () => {
     }
 });
 
-// if second number is negative, fix so that when you click the operator and then the negate button, it starts a new "-0" number
-
 // fix issue if changing operator after typing first number
 
 // add starting 0 if choosing operator first
 
-// maybe fix issue with typing a number after hitting 0
-
 // add view at top showing current equation
-
-// change clear button to clear current number
 
 // add keyboard support
 
 // rearrage buttons on calculator
+
+// MAYBE fix issue with typing a number after hitting =
