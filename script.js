@@ -58,53 +58,85 @@ function operate(operator, num1, num2) {
     }
 }
 
-function populateNumbers() {
-    numberButtons.forEach((button) => {
-        button.addEventListener('click', function (e) {
-            isOperationLocked = true;
-            if (isCompleteNumber) {
-                displayText.textContent = '';
-                displayValue = '0';
-                isCompleteNumber = false;
-            }
-            if (displayValue.length < 14) {
-                if (displayText.textContent == '-0') {
-                    displayText.textContent = `-${e.target.textContent}`;
-                } else if (displayText.textContent == '0') {
-                    displayText.textContent = e.target.textContent;
-                } else {
-                    displayText.textContent += e.target.textContent;
-                    displayValue = displayText.textContent.toString();
-                }
-            }
-        });
-    });
+function populateNumbers(e) {
+    isOperationLocked = true;
+    if (isCompleteNumber) {
+        displayText.textContent = '';
+        displayValue = '0';
+        isCompleteNumber = false;
+    }
+    if (displayValue.length < 14) {
+        if (displayText.textContent == '-0') {
+            displayText.textContent = `-${e}`;
+        } else if (displayText.textContent == '0') {
+            displayText.textContent = e;
+        } else {
+            displayText.textContent += e;
+            displayValue = displayText.textContent.toString();
+        }
+    }
 }
 
-populateNumbers();
+numberButtons.forEach((button) => {
+    button.addEventListener('click', (e) => populateNumbers(e.target.textContent));
+});
 
-function onClick(button) {
-    button.classList.add("active");
+function isStar (operator) {
+    if (operator == '*') return 'x';
+    else return operator;
 }
 
 document.addEventListener('keydown', function (e) {
-    if (e.key >= 0 && e.key <= 9) {
-        isOperationLocked = true;
-        if (isCompleteNumber) {
-            displayText.textContent = '';
-            displayValue = '0';
-            isCompleteNumber = false;
+    if (e.key >= 0 && e.key <= 9) populateNumbers(e.key);
+    
+    if (e.key == '/' || e.key == '*' || e.key == '-' || e.key == '+') {
+        isRepeatedEqual = false;
+        if (!displayText.textContent) {
+            displayText.textContent = '0';           
         }
-        if (displayValue.length < 14) {
-            if (displayText.textContent == '-0') {
-                displayText.textContent = `-${e.key}`;
-            } else if (displayText.textContent == '0') {
-                displayText.textContent = e.key;
-            } else {
-                displayText.textContent += e.key;
-                displayValue = displayText.textContent.toString();
-            }
-        }      
+        if (displayText.textContent == "Number is too big" || displayText.textContent == "Can't divide by 0") {
+            displayText.textContent = '0';
+            equationText.textContent = "0 " + isStar(e.key);
+
+        }
+        if (!isOperationLocked) {
+            isFirstEquation = true;
+            isSecondEquation = false;
+        }
+        if (isFirstEquation) {
+            operator = isStar(e.key);
+            num1 = Number(displayText.textContent);
+            isCompleteNumber = true;
+            isFirstEquation = false;
+            isSecondEquation = true;
+            isOperationLocked = false;
+        } else if (isSecondEquation) {
+            num2 = Number(displayText.textContent);
+            result = operate(operator, num1, num2);
+            displayText.textContent = result;
+            isCompleteNumber = true;
+            isSecondEquation = false;
+            operator = isStar(e.key);
+            num1 = result;
+            isOperationLocked = false;
+        } else {
+            num2 = Number(displayText.textContent);
+            result = operate(operator, num1, num2);
+            displayText.textContent = result;
+            isCompleteNumber = true;
+            operator = isStar(e.key);
+            num1 = result;
+            isOperationLocked = false;
+        }
+        console.log("num1 " + num1);
+        console.log("num2 " + num2);
+        console.log("operator " + operator);
+        if (result == "Number is too big" || result == "Can't divide by 0") {
+            equationText.textContent = '';
+            isFirstEquation = true;
+            isSecondEquation = false;
+            result = '';
+        } else equationText.textContent = num1 + " " + operator;
     }
 
     for (const button of numberButtons.values()) {
@@ -117,7 +149,6 @@ document.addEventListener('keydown', function (e) {
         }
     }
 });
-
 
 operatorButtons.forEach((button) => {
     button.addEventListener('click', function (e) {
@@ -244,6 +275,10 @@ decimalButton.addEventListener('click', () => {
     }
 });
 
+// MAKE FUNCTIONS FOR ALL EVENT FUNCTIONS AND THEN ADD KEYBOARD SUPPORT AFTER, PASSING THOSE FUNCTIONS THROUGH
+
 // add keyboard support for operators and other buttons
 
 // figure out on click events
+
+// fix issue where button stays selected when clicking then using keyboard after
