@@ -44,8 +44,6 @@ function roundResult(number) {
 }
 
 function operate(operator, num1, num2) {
-    // console.log("num1 " + num1);
-    // console.log("num2 " + num2);
     if (operator === '+') {
         return add(num1, num2);
     } else if (operator === '-') {
@@ -56,6 +54,11 @@ function operate(operator, num1, num2) {
         if (num2 == '0') return "Can't divide by 0";
         return divide(num1, num2);
     }
+}
+
+function isStar (operator) {
+    if (operator == '*') return 'x';
+    else return operator;
 }
 
 function populateNumbers(e) {
@@ -77,67 +80,56 @@ function populateNumbers(e) {
     }
 }
 
-numberButtons.forEach((button) => {
-    button.addEventListener('click', (e) => populateNumbers(e.target.textContent));
-});
+function populateOperators (e) {
+    isRepeatedEqual = false;
+    if (!displayText.textContent) {
+        displayText.textContent = '0';           
+    }
+    if (displayText.textContent == "Number is too big" || displayText.textContent == "Can't divide by 0") {
+        displayText.textContent = '0';
+        equationText.textContent = "0 " + isStar(e);
 
-function isStar (operator) {
-    if (operator == '*') return 'x';
-    else return operator;
+    }
+    if (!isOperationLocked) {
+        isFirstEquation = true;
+        isSecondEquation = false;
+    }
+    if (isFirstEquation) {
+        operator = isStar(e);
+        num1 = Number(displayText.textContent);
+        isCompleteNumber = true;
+        isFirstEquation = false;
+        isSecondEquation = true;
+        isOperationLocked = false;
+    } else if (isSecondEquation) {
+        num2 = Number(displayText.textContent);
+        result = operate(operator, num1, num2);
+        displayText.textContent = result;
+        isCompleteNumber = true;
+        isSecondEquation = false;
+        operator = isStar(e);
+        num1 = result;
+        isOperationLocked = false;
+    } else {
+        num2 = Number(displayText.textContent);
+        result = operate(operator, num1, num2);
+        displayText.textContent = result;
+        isCompleteNumber = true;
+        operator = isStar(e);
+        num1 = result;
+        isOperationLocked = false;
+    }
+    if (result == "Number is too big" || result == "Can't divide by 0") {
+        equationText.textContent = '';
+        isFirstEquation = true;
+        isSecondEquation = false;
+        result = '';
+    } else equationText.textContent = num1 + " " + operator;
 }
 
 document.addEventListener('keydown', function (e) {
     if (e.key >= 0 && e.key <= 9) populateNumbers(e.key);
-    
-    if (e.key == '/' || e.key == '*' || e.key == '-' || e.key == '+') {
-        isRepeatedEqual = false;
-        if (!displayText.textContent) {
-            displayText.textContent = '0';           
-        }
-        if (displayText.textContent == "Number is too big" || displayText.textContent == "Can't divide by 0") {
-            displayText.textContent = '0';
-            equationText.textContent = "0 " + isStar(e.key);
-
-        }
-        if (!isOperationLocked) {
-            isFirstEquation = true;
-            isSecondEquation = false;
-        }
-        if (isFirstEquation) {
-            operator = isStar(e.key);
-            num1 = Number(displayText.textContent);
-            isCompleteNumber = true;
-            isFirstEquation = false;
-            isSecondEquation = true;
-            isOperationLocked = false;
-        } else if (isSecondEquation) {
-            num2 = Number(displayText.textContent);
-            result = operate(operator, num1, num2);
-            displayText.textContent = result;
-            isCompleteNumber = true;
-            isSecondEquation = false;
-            operator = isStar(e.key);
-            num1 = result;
-            isOperationLocked = false;
-        } else {
-            num2 = Number(displayText.textContent);
-            result = operate(operator, num1, num2);
-            displayText.textContent = result;
-            isCompleteNumber = true;
-            operator = isStar(e.key);
-            num1 = result;
-            isOperationLocked = false;
-        }
-        console.log("num1 " + num1);
-        console.log("num2 " + num2);
-        console.log("operator " + operator);
-        if (result == "Number is too big" || result == "Can't divide by 0") {
-            equationText.textContent = '';
-            isFirstEquation = true;
-            isSecondEquation = false;
-            result = '';
-        } else equationText.textContent = num1 + " " + operator;
-    }
+    if (e.key == '/' || e.key == '*' || e.key == '-' || e.key == '+') populateOperators(e.key);
 
     for (const button of numberButtons.values()) {
         if (e.key == button.id) {
@@ -150,56 +142,12 @@ document.addEventListener('keydown', function (e) {
     }
 });
 
-operatorButtons.forEach((button) => {
-    button.addEventListener('click', function (e) {
-        isRepeatedEqual = false;
-        if (!displayText.textContent) {
-            displayText.textContent = '0';           
-        }
-        if (displayText.textContent == "Number is too big" || displayText.textContent == "Can't divide by 0") {
-            displayText.textContent = '0';
-            equationText.textContent = "0 " + e.target.textContent;
+numberButtons.forEach((button) => {
+    button.addEventListener('click', (e) => populateNumbers(e.target.textContent));
+});
 
-        }
-        if (!isOperationLocked) {
-            isFirstEquation = true;
-            isSecondEquation = false;
-        }
-        if (isFirstEquation) {
-            operator = e.target.textContent;
-            num1 = Number(displayText.textContent);
-            isCompleteNumber = true;
-            isFirstEquation = false;
-            isSecondEquation = true;
-            isOperationLocked = false;
-        } else if (isSecondEquation) {
-            num2 = Number(displayText.textContent);
-            result = operate(operator, num1, num2);
-            displayText.textContent = result;
-            isCompleteNumber = true;
-            isSecondEquation = false;
-            operator = e.target.textContent;
-            num1 = result;
-            isOperationLocked = false;
-        } else {
-            num2 = Number(displayText.textContent);
-            result = operate(operator, num1, num2);
-            displayText.textContent = result;
-            isCompleteNumber = true;
-            operator = e.target.textContent;
-            num1 = result;
-            isOperationLocked = false;
-        }
-        console.log("num1 " + num1);
-        console.log("num2 " + num2);
-        console.log("operator " + operator);
-        if (result == "Number is too big" || result == "Can't divide by 0") {
-            equationText.textContent = '';
-            isFirstEquation = true;
-            isSecondEquation = false;
-            result = '';
-        } else equationText.textContent = num1 + " " + operator;
-    });
+operatorButtons.forEach((button) => {
+    button.addEventListener('click', (e) => populateOperators(e.target.textContent));
 });
 
 equalButton.addEventListener('click', function (e) {
