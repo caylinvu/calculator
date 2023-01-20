@@ -84,7 +84,8 @@ function populateNumbers() {
 populateNumbers();
 
 function onClick(button) {
-    button.style.backgroundColor = 'black';
+    // button.style.backgroundColor = 'black';
+    // add on click styling here!!!!!!!!!
 }
 
 document.addEventListener('keydown', function (e) {
@@ -169,6 +170,13 @@ operatorButtons.forEach((button) => {
 });
 
 equalButton.addEventListener('click', function (e) {
+    if (!displayText.textContent) {
+        equationText.textContent = '';
+        displayText.textContent = '0';
+        isRepeatedEqual = true;
+        return;
+    }
+    if (isFirstEquation) return;
     if (!isRepeatedEqual) {
         num2 = Number(displayText.textContent);
         result = operate(operator, num1, num2);
@@ -245,7 +253,9 @@ decimalButton.addEventListener('click', () => {
     }
 });
 
-// add keyboard support
+// add keyboard support for operators and other buttons
+
+// figure out on click events
 
 // rearrage buttons on calculator
 
