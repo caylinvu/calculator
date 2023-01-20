@@ -14,6 +14,7 @@
     padding: 30px;
     gap: 20px;
     flex-basis: auto;
+    background-color: #FF8787;
 }
 
 .display {
@@ -25,6 +26,8 @@
     justify-content: space-between;
     align-items: flex-end;
     padding: 20px 25px;
+    background-color: #fdfbee;
+    /* background-color: rgb(241, 241, 241); */
 }
 
 .equation {
@@ -46,4 +49,30 @@
     height: 70px;
     width: 78px;
     font-size: 22px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 4px #ff6161;
+}
+
+.calc-buttons button:hover {
+    filter: brightness(110%);
+    box-shadow: 0 4px #ff6161;
+    transition: .15s;
+}
+
+.calc-buttons button:active {
+    box-shadow: 0 1px #ff6161;
+    transform: translateY(2.5px);
+}
+
+.calc-buttons .number, .decimal {
+    background-color: #F8C4B4;
+}
+
+.calc-buttons .operator, .equals {
+    background-color: #FCDDB0;
+}
+
+.all-clear, .backspace, .percent, .negate {
+    background-color: #FFFAD7;
 }

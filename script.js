@@ -246,6 +246,6 @@ decimalButton.addEventListener('click', () => {
 
 // figure out on click events
 
-// rearrage buttons on calculator
+// maybe rearrage buttons on calculator
 
-// decide if want to leave repeating equals or not
+// UI!!!!
