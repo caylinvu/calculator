@@ -17,6 +17,7 @@ let isCompleteNumber = false;
 let isFirstEquation = true;
 let isSecondEquation = false;
 let isRepeatedEqual = false;
+let isOperationLocked = true;
 
 function add(num1, num2) {
     return roundResult(num1 + num2);
@@ -59,6 +60,7 @@ function operate(operator, num1, num2) {
 function populateNumbers() {
     numberButtons.forEach((button) => {
         button.addEventListener('click', function (e) {
+            isOperationLocked = true;
             if (isCompleteNumber) {
                 displayText.textContent = '';
                 displayValue = '0';
@@ -86,12 +88,17 @@ operatorButtons.forEach((button) => {
         if (!displayText.textContent) {
             displayText.textContent = '0';
         }
+        if (!isOperationLocked) {
+            isFirstEquation = true;
+            isSecondEquation = false;
+        }
         if (isFirstEquation) {
             operator = e.target.textContent;
             num1 = Number(displayText.textContent);
             isCompleteNumber = true;
             isFirstEquation = false;
             isSecondEquation = true;
+            isOperationLocked = false;
         } else if (isSecondEquation) {
             num2 = Number(displayText.textContent);
             result = operate(operator, num1, num2);
@@ -100,6 +107,7 @@ operatorButtons.forEach((button) => {
             isSecondEquation = false;
             operator = e.target.textContent;
             num1 = result;
+            isOperationLocked = false;
         } else {
             num2 = Number(displayText.textContent);
             result = operate(operator, num1, num2);
@@ -107,6 +115,7 @@ operatorButtons.forEach((button) => {
             isCompleteNumber = true;
             operator = e.target.textContent;
             num1 = result;
+            isOperationLocked = false;
         }
     });
 });
@@ -177,8 +186,6 @@ decimalButton.addEventListener('click', () => {
         isCompleteNumber = false;
     }
 });
-
-// fix issue if changing operator after typing first number
 
 // add view at top showing current equation
 
