@@ -1,4 +1,5 @@
 const displayText = document.querySelector('.display-text');
+const equationText = document.querySelector('.equation');
 const numberButtons = document.querySelectorAll('.number');
 const operatorButtons = document.querySelectorAll('.operator');
 const equalButton = document.querySelector('.equals');
@@ -86,7 +87,7 @@ operatorButtons.forEach((button) => {
     button.addEventListener('click', function (e) {
         isRepeatedEqual = false;
         if (!displayText.textContent) {
-            displayText.textContent = '0';
+            displayText.textContent = '0';           
         }
         if (!isOperationLocked) {
             isFirstEquation = true;
@@ -117,6 +118,9 @@ operatorButtons.forEach((button) => {
             num1 = result;
             isOperationLocked = false;
         }
+        if (result == "Number is too big" || result == "Can't divide by 0") {
+            equationText.textContent = '';
+        } else equationText.textContent = num1 + " " + operator;
     });
 });
 
@@ -125,13 +129,19 @@ equalButton.addEventListener('click', function (e) {
         num2 = Number(displayText.textContent);
         result = operate(operator, num1, num2);
         displayText.textContent = result;
+        let tempNum2 = num2.toString();
+        if (result == "Number is too big" || result == "Can't divide by 0") {
+            equationText.textContent = '';
+        } else if (tempNum2.includes("-")) {
+            equationText.textContent += " (" + num2 + ") =";
+        } else equationText.textContent += " " + num2 + " =";
         isFirstEquation = true;
         isRepeatedEqual = true;
-    } else if (isRepeatedEqual) {
+    } /* else if (isRepeatedEqual) {
         num1 = result;
         result = operate(operator, num1, num2);
         displayText.textContent = result;
-    }
+    } */
 
     isCompleteNumber = true;
 });
@@ -147,6 +157,7 @@ allClearButton.addEventListener('click', () => {
     isSecondEquation = false;
     isRepeatedEqual = false;
     displayText.textContent = '';
+    equationText.textContent = '';
 });
 
 backspaceButton.addEventListener('click', () => {
@@ -160,6 +171,7 @@ percentButton.addEventListener('click', () => {
 negateButton.addEventListener('click', () => {
     if (!displayText.textContent || displayText.textContent == '0') {
         displayText.textContent = '-0';
+        isCompleteNumber = false;
     } else if (displayText.textContent == '-') {
         displayText.textContent = '0';
     } else if (isCompleteNumber && isFirstEquation) {
@@ -189,8 +201,10 @@ decimalButton.addEventListener('click', () => {
 
 // add view at top showing current equation
 
+// update to start over if get number is too big or can't divide by 0
+
 // add keyboard support
 
 // rearrage buttons on calculator
 
-// MAYBE fix issue with typing a number after hitting =
+// decide if want to leave repeating equals or not

@@ -21,11 +21,14 @@
     border-radius: 10px;
     height: 150px;
     display: flex;
-    justify-content: end;
+    flex-direction: column;
+    justify-content: space-between;
     align-items: flex-end;
-    padding-right: 25px;
-    padding-left: 25px;
-    padding-bottom: 20px;
+    padding: 20px 25px;
+}
+
+.equation {
+    font-size: 28px;
 }
 
 .display-text {
