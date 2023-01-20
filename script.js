@@ -44,8 +44,8 @@ function roundResult(number) {
 }
 
 function operate(operator, num1, num2) {
-    console.log("num1 " + num1);
-    console.log("num2 " + num2);
+    // console.log("num1 " + num1);
+    // console.log("num2 " + num2);
     if (operator === '+') {
         return add(num1, num2);
     } else if (operator === '-') {
@@ -89,6 +89,11 @@ operatorButtons.forEach((button) => {
         if (!displayText.textContent) {
             displayText.textContent = '0';           
         }
+        if (displayText.textContent == "Number is too big" || displayText.textContent == "Can't divide by 0") {
+            displayText.textContent = '0';
+            equationText.textContent = "0 " + e.target.textContent;
+
+        }
         if (!isOperationLocked) {
             isFirstEquation = true;
             isSecondEquation = false;
@@ -118,8 +123,15 @@ operatorButtons.forEach((button) => {
             num1 = result;
             isOperationLocked = false;
         }
+        console.log("num1 " + num1);
+        console.log("num2 " + num2);
+        console.log("operator " + operator);
         if (result == "Number is too big" || result == "Can't divide by 0") {
             equationText.textContent = '';
+            isFirstEquation = true;
+            isSecondEquation = false;
+            result = '';
+            num2 = '';
         } else equationText.textContent = num1 + " " + operator;
     });
 });
@@ -132,10 +144,13 @@ equalButton.addEventListener('click', function (e) {
         let tempNum2 = num2.toString();
         if (result == "Number is too big" || result == "Can't divide by 0") {
             equationText.textContent = '';
+            result = '';
+            num2 = '';
         } else if (tempNum2.includes("-")) {
             equationText.textContent += " (" + num2 + ") =";
         } else equationText.textContent += " " + num2 + " =";
         isFirstEquation = true;
+        isSecondEquation = false;
         isRepeatedEqual = true;
     } /* else if (isRepeatedEqual) {
         num1 = result;
