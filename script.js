@@ -83,6 +83,9 @@ populateNumbers();
 operatorButtons.forEach((button) => {
     button.addEventListener('click', function (e) {
         isRepeatedEqual = false;
+        if (!displayText.textContent) {
+            displayText.textContent = '0';
+        }
         if (isFirstEquation) {
             operator = e.target.textContent;
             num1 = Number(displayText.textContent);
@@ -176,8 +179,6 @@ decimalButton.addEventListener('click', () => {
 });
 
 // fix issue if changing operator after typing first number
-
-// add starting 0 if choosing operator first
 
 // add view at top showing current equation
 
