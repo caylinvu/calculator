@@ -75,6 +75,12 @@ body, button {
     transform: translateY(2.5px);
 }
 
+.active {
+    filter: brightness(110%);
+    box-shadow: 0 1px #ff6161;
+    transform: translateY(2.5px);
+}
+
 .calc-buttons .number, .decimal {
     background-color: #F8C4B4;
 }

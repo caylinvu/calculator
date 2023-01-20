@@ -84,8 +84,7 @@ function populateNumbers() {
 populateNumbers();
 
 function onClick(button) {
-    // button.style.backgroundColor = 'black';
-    // add on click styling here!!!!!!!!!
+    button.classList.add("active");
 }
 
 document.addEventListener('keydown', function (e) {
@@ -111,7 +110,10 @@ document.addEventListener('keydown', function (e) {
     for (const button of numberButtons.values()) {
         if (e.key == button.id) {
             console.log(button.id);
-            button.onclick = onClick(button);
+            button.onclick = button.classList.add("active");
+            document.addEventListener('keyup', function (e) {
+                button.classList.remove("active");
+            });
         }
     }
 });
@@ -245,7 +247,3 @@ decimalButton.addEventListener('click', () => {
 // add keyboard support for operators and other buttons
 
 // figure out on click events
-
-// maybe rearrage buttons on calculator
-
-// UI!!!!
