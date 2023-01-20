@@ -170,12 +170,6 @@ operatorButtons.forEach((button) => {
 });
 
 equalButton.addEventListener('click', function (e) {
-    if (!displayText.textContent) {
-        equationText.textContent = '';
-        displayText.textContent = '0';
-        isRepeatedEqual = true;
-        return;
-    }
     if (isFirstEquation) return;
     if (!isRepeatedEqual) {
         num2 = Number(displayText.textContent);
@@ -188,15 +182,10 @@ equalButton.addEventListener('click', function (e) {
         } else if (tempNum2.includes("-")) {
             equationText.textContent += " (" + num2 + ") =";
         } else equationText.textContent += " " + num2 + " =";
-        isFirstEquation = true;
-        isSecondEquation = false;
-        isRepeatedEqual = true;
-    } /* else if (isRepeatedEqual) {
-        num1 = result;
-        result = operate(operator, num1, num2);
-        displayText.textContent = result;
-    } */
-
+    } 
+    isFirstEquation = true;
+    isSecondEquation = false;
+    isRepeatedEqual = true;
     isCompleteNumber = true;
 });
 
