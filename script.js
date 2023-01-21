@@ -162,39 +162,15 @@ function pressClear() {
     equationText.textContent = '';
 }
 
-document.addEventListener('keydown', function (e) {
-    if (e.key >= 0 && e.key <= 9) populateNumbers(e.key);
-    if (e.key == '/' || e.key == '*' || e.key == '-' || e.key == '+') populateOperators(e.key);
-    if (e.key == 'Enter') pressEquals();
-
-    for (const button of allButtons.values()) {
-        if (e.key == button.id) {
-            console.log(button.id);
-            button.onclick = button.classList.add("active");
-            document.addEventListener('keyup', function (e) {
-                button.classList.remove("active");
-            });
-        }
-    }
-});
-
-numberButtons.forEach((button) => button.addEventListener('click', (e) => populateNumbers(e.target.textContent)));
-
-operatorButtons.forEach((button) => button.addEventListener('click', (e) => populateOperators(e.target.textContent)));
-
-equalButton.addEventListener('click', pressEquals);
-
-allClearButton.addEventListener('click', pressClear);
-
-backspaceButton.addEventListener('click', () => {
+function pressBackspace() {
     displayText.textContent = displayText.textContent.slice(0, (displayText.textContent.length - 1));
-});
+}
 
-percentButton.addEventListener('click', () => {
+function pressPercent() {
     displayText.textContent = displayText.textContent / 100;
-});
+}
 
-negateButton.addEventListener('click', () => {
+function pressNegate() {
     if (!displayText.textContent || displayText.textContent == '0') {
         displayText.textContent = '-0';
         isCompleteNumber = false;
@@ -208,9 +184,9 @@ negateButton.addEventListener('click', () => {
     } else if (displayText.textContent) {
         displayText.textContent = -(displayText.textContent);
     }
-});
+}
 
-decimalButton.addEventListener('click', () => {
+function pressDecimal() {
     if (!isCompleteNumber) {
         if (!displayText.textContent.includes('.')) {
             if (!displayText.textContent) {
@@ -223,12 +199,35 @@ decimalButton.addEventListener('click', () => {
         displayText.textContent = "0.";
         isCompleteNumber = false;
     }
+}
+
+document.addEventListener('keydown', function (e) {
+    if (e.key >= 0 && e.key <= 9) populateNumbers(e.key);
+    if (e.key == '/' || e.key == '*' || e.key == '-' || e.key == '+') populateOperators(e.key);
+    if (e.key == 'Enter') pressEquals();
+    if (e.key == 'Backspace') pressBackspace();
+    if (e.key == '.') pressDecimal();
+
+    for (const button of allButtons.values()) {
+        if (e.key == button.id) {
+            console.log(button.id);
+            button.onclick = button.classList.add("active");
+            document.addEventListener('keyup', function (e) {
+                button.classList.remove("active");
+            });
+        }
+    }
 });
 
-// MAKE FUNCTIONS FOR ALL EVENT FUNCTIONS AND THEN ADD KEYBOARD SUPPORT AFTER, PASSING THOSE FUNCTIONS THROUGH
-
-// add keyboard support for operators and other buttons
-
-// figure out on click events
+numberButtons.forEach((button) => button.addEventListener('click', (e) => populateNumbers(e.target.textContent)));
+operatorButtons.forEach((button) => button.addEventListener('click', (e) => populateOperators(e.target.textContent)));
+equalButton.addEventListener('click', pressEquals);
+allClearButton.addEventListener('click', pressClear);
+backspaceButton.addEventListener('click', pressBackspace);
+percentButton.addEventListener('click', pressPercent);
+negateButton.addEventListener('click', pressNegate);
+decimalButton.addEventListener('click', pressDecimal);
 
 // fix issue where button stays selected when clicking then using keyboard after
+
+// finish cleaning up code
