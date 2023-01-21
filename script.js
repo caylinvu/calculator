@@ -1,5 +1,6 @@
 const displayText = document.querySelector('.display-text');
 const equationText = document.querySelector('.equation');
+const allButtons = document.querySelectorAll('button');
 const numberButtons = document.querySelectorAll('.number');
 const operatorButtons = document.querySelectorAll('.operator');
 const equalButton = document.querySelector('.equals');
@@ -131,7 +132,7 @@ document.addEventListener('keydown', function (e) {
     if (e.key >= 0 && e.key <= 9) populateNumbers(e.key);
     if (e.key == '/' || e.key == '*' || e.key == '-' || e.key == '+') populateOperators(e.key);
 
-    for (const button of numberButtons.values()) {
+    for (const button of allButtons.values()) {
         if (e.key == button.id) {
             console.log(button.id);
             button.onclick = button.classList.add("active");
@@ -142,13 +143,9 @@ document.addEventListener('keydown', function (e) {
     }
 });
 
-numberButtons.forEach((button) => {
-    button.addEventListener('click', (e) => populateNumbers(e.target.textContent));
-});
+numberButtons.forEach((button) => button.addEventListener('click', (e) => populateNumbers(e.target.textContent)));
 
-operatorButtons.forEach((button) => {
-    button.addEventListener('click', (e) => populateOperators(e.target.textContent));
-});
+operatorButtons.forEach((button) => button.addEventListener('click', (e) => populateOperators(e.target.textContent)));
 
 equalButton.addEventListener('click', function (e) {
     if (isFirstEquation) return;
