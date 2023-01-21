@@ -128,26 +128,7 @@ function populateOperators (e) {
     } else equationText.textContent = num1 + " " + operator;
 }
 
-document.addEventListener('keydown', function (e) {
-    if (e.key >= 0 && e.key <= 9) populateNumbers(e.key);
-    if (e.key == '/' || e.key == '*' || e.key == '-' || e.key == '+') populateOperators(e.key);
-
-    for (const button of allButtons.values()) {
-        if (e.key == button.id) {
-            console.log(button.id);
-            button.onclick = button.classList.add("active");
-            document.addEventListener('keyup', function (e) {
-                button.classList.remove("active");
-            });
-        }
-    }
-});
-
-numberButtons.forEach((button) => button.addEventListener('click', (e) => populateNumbers(e.target.textContent)));
-
-operatorButtons.forEach((button) => button.addEventListener('click', (e) => populateOperators(e.target.textContent)));
-
-equalButton.addEventListener('click', function (e) {
+function pressEquals() {
     if (isFirstEquation) return;
     if (!isRepeatedEqual) {
         num2 = Number(displayText.textContent);
@@ -165,9 +146,9 @@ equalButton.addEventListener('click', function (e) {
     isSecondEquation = false;
     isRepeatedEqual = true;
     isCompleteNumber = true;
-});
+}
 
-allClearButton.addEventListener('click', () => {
+function pressClear() {
     displayValue = '0';
     num1 = '';
     num2 = '';
@@ -179,7 +160,31 @@ allClearButton.addEventListener('click', () => {
     isRepeatedEqual = false;
     displayText.textContent = '';
     equationText.textContent = '';
+}
+
+document.addEventListener('keydown', function (e) {
+    if (e.key >= 0 && e.key <= 9) populateNumbers(e.key);
+    if (e.key == '/' || e.key == '*' || e.key == '-' || e.key == '+') populateOperators(e.key);
+    if (e.key == 'Enter') pressEquals();
+
+    for (const button of allButtons.values()) {
+        if (e.key == button.id) {
+            console.log(button.id);
+            button.onclick = button.classList.add("active");
+            document.addEventListener('keyup', function (e) {
+                button.classList.remove("active");
+            });
+        }
+    }
 });
+
+numberButtons.forEach((button) => button.addEventListener('click', (e) => populateNumbers(e.target.textContent)));
+
+operatorButtons.forEach((button) => button.addEventListener('click', (e) => populateOperators(e.target.textContent)));
+
+equalButton.addEventListener('click', pressEquals);
+
+allClearButton.addEventListener('click', pressClear);
 
 backspaceButton.addEventListener('click', () => {
     displayText.textContent = displayText.textContent.slice(0, (displayText.textContent.length - 1));
