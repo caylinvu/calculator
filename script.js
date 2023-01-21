@@ -62,7 +62,7 @@ function isStar (operator) {
     else return operator;
 }
 
-function populateNumbers(e) {
+function pressNumbers(e) {
     isOperationLocked = true;
     if (isCompleteNumber) {
         displayText.textContent = '';
@@ -81,7 +81,7 @@ function populateNumbers(e) {
     }
 }
 
-function populateOperators (e) {
+function pressOperators(e) {
     isRepeatedEqual = false;
     if (!displayText.textContent) {
         displayText.textContent = '0';           
@@ -201,13 +201,20 @@ function pressDecimal() {
     }
 }
 
+numberButtons.forEach((button) => button.addEventListener('click', (e) => pressNumbers(e.target.textContent)));
+operatorButtons.forEach((button) => button.addEventListener('click', (e) => pressOperators(e.target.textContent)));
+equalButton.addEventListener('click', pressEquals);
+allClearButton.addEventListener('click', pressClear);
+backspaceButton.addEventListener('click', pressBackspace);
+percentButton.addEventListener('click', pressPercent);
+negateButton.addEventListener('click', pressNegate);
+decimalButton.addEventListener('click', pressDecimal);
 document.addEventListener('keydown', function (e) {
-    if (e.key >= 0 && e.key <= 9) populateNumbers(e.key);
-    if (e.key == '/' || e.key == '*' || e.key == '-' || e.key == '+') populateOperators(e.key);
+    if (e.key >= 0 && e.key <= 9) pressNumbers(e.key);
+    if (e.key == '/' || e.key == '*' || e.key == '-' || e.key == '+') pressOperators(e.key);
     if (e.key == 'Enter') pressEquals();
     if (e.key == 'Backspace') pressBackspace();
     if (e.key == '.') pressDecimal();
-
     for (const button of allButtons.values()) {
         if (e.key == button.id) {
             console.log(button.id);
@@ -218,15 +225,6 @@ document.addEventListener('keydown', function (e) {
         }
     }
 });
-
-numberButtons.forEach((button) => button.addEventListener('click', (e) => populateNumbers(e.target.textContent)));
-operatorButtons.forEach((button) => button.addEventListener('click', (e) => populateOperators(e.target.textContent)));
-equalButton.addEventListener('click', pressEquals);
-allClearButton.addEventListener('click', pressClear);
-backspaceButton.addEventListener('click', pressBackspace);
-percentButton.addEventListener('click', pressPercent);
-negateButton.addEventListener('click', pressNegate);
-decimalButton.addEventListener('click', pressDecimal);
 
 // fix issue where button stays selected when clicking then using keyboard after
 
