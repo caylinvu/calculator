@@ -21,21 +21,25 @@ let isSecondEquation = false;
 let isRepeatedEqual = false;
 let isOperationLocked = true;
 
+// operation functions
+
 function add(num1, num2) {
-    return roundResult(num1 + num2);
+    return num1 + num2;
 }
 
 function subtract(num1, num2) {
-    return roundResult(num1 - num2);
+    return num1 - num2;
 }
 
 function multiply(num1, num2) {
-    return roundResult(num1 * num2);
+    return num1 * num2;
 }
 
 function divide(num1, num2) {
-    return roundResult(num1 / num2);
+    return num1 / num2;
 }
+
+// round decimals or display 'Number is too big' if over 14 numbers
 
 function roundResult(number) {
     finalResult = Math.round(number * 1000) / 1000;
@@ -44,27 +48,36 @@ function roundResult(number) {
     return finalResult;
 }
 
+// choose correct operation function and return result
+
 function operate(operator, num1, num2) {
     if (operator === '+') {
-        return add(num1, num2);
+        tempResult = add(num1, num2);
     } else if (operator === '-') {
-        return subtract(num1, num2);
+        tempResult = subtract(num1, num2);
     } else if (operator === 'x') {
-        return multiply(num1, num2);
+        tempResult = multiply(num1, num2);
     } else if (operator === '/') {
         if (num2 == '0') return "Can't divide by 0";
-        return divide(num1, num2);
+        tempResult = divide(num1, num2);
     }
+    return roundResult(tempResult);
 }
+
+// use 'x' as operator if user enters '*' on keyboard
 
 function isStar (operator) {
     if (operator == '*') return 'x';
     else return operator;
 }
 
+// unfocus buttons after clicking on them with mouse (so that pressing enter on the keyboard won't click them again)
+
 function unfocusInput() {
     allButtons.forEach((button) => button.blur());
 }
+
+// code to run when a number is pressed
 
 function pressNumbers(e) {
     isOperationLocked = true;
@@ -85,6 +98,8 @@ function pressNumbers(e) {
     }
     unfocusInput();
 }
+
+// code to run when an operator is pressed
 
 function pressOperators(e) {
     isRepeatedEqual = false;
@@ -134,6 +149,8 @@ function pressOperators(e) {
     unfocusInput();
 }
 
+// code to run when the equals sign is pressed
+
 function pressEquals() {
     if (isFirstEquation) return;
     if (!isRepeatedEqual) {
@@ -155,6 +172,8 @@ function pressEquals() {
     unfocusInput();
 }
 
+// code to run when the AC button is pressed
+
 function pressClear() {
     displayValue = '0';
     num1 = '';
@@ -170,15 +189,21 @@ function pressClear() {
     unfocusInput();
 }
 
+// code to run when the backspace button is pressed
+
 function pressBackspace() {
     displayText.textContent = displayText.textContent.slice(0, (displayText.textContent.length - 1));
     unfocusInput();
 }
 
+// code to run when the percent button is pressed
+
 function pressPercent() {
     displayText.textContent = displayText.textContent / 100;
     unfocusInput();
 }
+
+// code to run when the negate button is pressed
 
 function pressNegate() {
     if (!displayText.textContent || displayText.textContent == '0') {
@@ -197,6 +222,8 @@ function pressNegate() {
     unfocusInput();
 }
 
+// code to run when the decimal button is pressed
+
 function pressDecimal() {
     if (!isCompleteNumber) {
         if (!displayText.textContent.includes('.')) {
@@ -213,6 +240,22 @@ function pressDecimal() {
     unfocusInput();
 }
 
+// code to run when a button is pressed on the keyboard
+
+function pressKeyboard(e) {
+    if (e >= 0 && e <= 9) pressNumbers(e);
+    if (e == '/' || e == '*' || e == '-' || e == '+') pressOperators(e);
+    if (e == 'Enter') pressEquals();
+    if (e == 'Backspace') pressBackspace();
+    if (e == '.') pressDecimal();
+    for (const button of allButtons.values()) {
+        if (e == button.id) {
+            button.onclick = button.classList.add("active");
+            document.addEventListener('keyup', () => button.classList.remove("active"));
+        }
+    }
+}
+
 numberButtons.forEach((button) => button.addEventListener('click', (e) => pressNumbers(e.target.textContent)));
 operatorButtons.forEach((button) => button.addEventListener('click', (e) => pressOperators(e.target.textContent)));
 equalButton.addEventListener('click', pressEquals);
@@ -221,22 +264,4 @@ backspaceButton.addEventListener('click', pressBackspace);
 percentButton.addEventListener('click', pressPercent);
 negateButton.addEventListener('click', pressNegate);
 decimalButton.addEventListener('click', pressDecimal);
-
-document.addEventListener('keydown', function (e) {
-    if (e.key >= 0 && e.key <= 9) pressNumbers(e.key);
-    if (e.key == '/' || e.key == '*' || e.key == '-' || e.key == '+') pressOperators(e.key);
-    if (e.key == 'Enter') pressEquals();
-    if (e.key == 'Backspace') pressBackspace();
-    if (e.key == '.') pressDecimal();
-    for (const button of allButtons.values()) {
-        if (e.key == button.id) {
-            console.log(button.id);
-            button.onclick = button.classList.add("active");
-            document.addEventListener('keyup', function (e) {
-                button.classList.remove("active");
-            });
-        }
-    }
-});
-
-// finish cleaning up code
+document.addEventListener('keydown', (e) => pressKeyboard(e.key));
