@@ -62,6 +62,10 @@ function isStar (operator) {
     else return operator;
 }
 
+function unfocusInput() {
+    allButtons.forEach((button) => button.blur());
+}
+
 function pressNumbers(e) {
     isOperationLocked = true;
     if (isCompleteNumber) {
@@ -79,6 +83,7 @@ function pressNumbers(e) {
             displayValue = displayText.textContent.toString();
         }
     }
+    unfocusInput();
 }
 
 function pressOperators(e) {
@@ -126,6 +131,7 @@ function pressOperators(e) {
         isSecondEquation = false;
         result = '';
     } else equationText.textContent = num1 + " " + operator;
+    unfocusInput();
 }
 
 function pressEquals() {
@@ -146,6 +152,7 @@ function pressEquals() {
     isSecondEquation = false;
     isRepeatedEqual = true;
     isCompleteNumber = true;
+    unfocusInput();
 }
 
 function pressClear() {
@@ -160,14 +167,17 @@ function pressClear() {
     isRepeatedEqual = false;
     displayText.textContent = '';
     equationText.textContent = '';
+    unfocusInput();
 }
 
 function pressBackspace() {
     displayText.textContent = displayText.textContent.slice(0, (displayText.textContent.length - 1));
+    unfocusInput();
 }
 
 function pressPercent() {
     displayText.textContent = displayText.textContent / 100;
+    unfocusInput();
 }
 
 function pressNegate() {
@@ -184,6 +194,7 @@ function pressNegate() {
     } else if (displayText.textContent) {
         displayText.textContent = -(displayText.textContent);
     }
+    unfocusInput();
 }
 
 function pressDecimal() {
@@ -199,6 +210,7 @@ function pressDecimal() {
         displayText.textContent = "0.";
         isCompleteNumber = false;
     }
+    unfocusInput();
 }
 
 numberButtons.forEach((button) => button.addEventListener('click', (e) => pressNumbers(e.target.textContent)));
@@ -209,6 +221,7 @@ backspaceButton.addEventListener('click', pressBackspace);
 percentButton.addEventListener('click', pressPercent);
 negateButton.addEventListener('click', pressNegate);
 decimalButton.addEventListener('click', pressDecimal);
+
 document.addEventListener('keydown', function (e) {
     if (e.key >= 0 && e.key <= 9) pressNumbers(e.key);
     if (e.key == '/' || e.key == '*' || e.key == '-' || e.key == '+') pressOperators(e.key);
@@ -225,7 +238,5 @@ document.addEventListener('keydown', function (e) {
         }
     }
 });
-
-// fix issue where button stays selected when clicking then using keyboard after
 
 // finish cleaning up code
