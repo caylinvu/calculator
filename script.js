@@ -17,7 +17,6 @@ let operator = '';
 let result = '';
 let isCompleteNumber = false;
 let isFirstEquation = true;
-let isSecondEquation = false;
 let isRepeatedEqual = false;
 let isOperationLocked = true;
 
@@ -109,27 +108,15 @@ function pressOperators(e) {
     if (displayText.textContent == "Number is too big" || displayText.textContent == "Can't divide by 0") {
         displayText.textContent = '0';
         equationText.textContent = "0 " + isStar(e);
-
     }
     if (!isOperationLocked) {
         isFirstEquation = true;
-        isSecondEquation = false;
     }
     if (isFirstEquation) {
         operator = isStar(e);
         num1 = Number(displayText.textContent);
         isCompleteNumber = true;
         isFirstEquation = false;
-        isSecondEquation = true;
-        isOperationLocked = false;
-    } else if (isSecondEquation) {
-        num2 = Number(displayText.textContent);
-        result = operate(operator, num1, num2);
-        displayText.textContent = result;
-        isCompleteNumber = true;
-        isSecondEquation = false;
-        operator = isStar(e);
-        num1 = result;
         isOperationLocked = false;
     } else {
         num2 = Number(displayText.textContent);
@@ -143,7 +130,6 @@ function pressOperators(e) {
     if (result == "Number is too big" || result == "Can't divide by 0") {
         equationText.textContent = '';
         isFirstEquation = true;
-        isSecondEquation = false;
         result = '';
     } else equationText.textContent = num1 + " " + operator;
     unfocusInput();
@@ -166,7 +152,6 @@ function pressEquals() {
         } else equationText.textContent += " " + num2 + " =";
     } 
     isFirstEquation = true;
-    isSecondEquation = false;
     isRepeatedEqual = true;
     isCompleteNumber = true;
     unfocusInput();
@@ -182,7 +167,6 @@ function pressClear() {
     result = '';
     isCompleteNumber = false;
     isFirstEquation = true;
-    isSecondEquation = false;
     isRepeatedEqual = false;
     displayText.textContent = '';
     equationText.textContent = '';
