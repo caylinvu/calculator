@@ -213,6 +213,7 @@ function pressBackspace() {
         pressClear();
         return;
     }
+
     // delete the last number in the string on the display
     displayText.textContent = displayText.textContent.slice(0, (displayText.textContent.length - 1));
     displayValue = displayText.textContent.toString();
@@ -221,28 +222,36 @@ function pressBackspace() {
 
 // code to run when the percent button is pressed
 function pressPercent() {
+    // start over with '0' if pressed after error
+    if (displayText.textContent == "Number is too big" || displayText.textContent == "Can't divide by 0") {
+        pressClear();
+        displayText.textContent = '0';
+        return;
+    }
+
     // convert the number on the display to a percentage OR display 'Number is too big' if greater than 14 #'s
     let tempPercent = displayText.textContent / 100;
     displayValue = tempPercent.toString();
     if (displayValue.length > 14) {
         displayText.textContent = "Number is too big";
+        equationText.textContent = '';
         isCompleteNumber = true;
         isFirstEquation = true;
     } else {
         displayText.textContent = tempPercent;
     }
-/*     if (displayValue.length < 14) {
-        displayText.textContent = tempPercent;
-    } else {
-        displayText.textContent = "Number is too big";
-        isCompleteNumber = true;
-        isFirstEquation = true;
-    } */
     unfocusInput();
 }
 
 // code to run when the negate button is pressed
 function pressNegate() {
+    // start over with '-0' if pressed after error
+    if (displayText.textContent == "Number is too big" || displayText.textContent == "Can't divide by 0") {
+        pressClear();
+        displayText.textContent = '-0';
+        return;
+    }
+
     // toggle the number on the display between a positive and negative number
     if (!displayText.textContent || displayText.textContent == '0') {
         displayText.textContent = '-0';
@@ -266,6 +275,13 @@ function pressNegate() {
 
 // code to run when the decimal button is pressed
 function pressDecimal() {
+    // start over with '0.' if pressed after error
+    if (displayText.textContent == "Number is too big" || displayText.textContent == "Can't divide by 0") {
+        pressClear();
+        displayText.textContent = '0.';
+        return;
+    }
+
     // populates a decimal when button is pressed
     // if a complete number was previously entered, populates a new number starting with "0."
     if (!isCompleteNumber) {
@@ -322,3 +338,7 @@ percentButton.addEventListener('click', pressPercent);
 negateButton.addEventListener('click', pressNegate);
 decimalButton.addEventListener('click', pressDecimal);
 document.addEventListener('keydown', (e) => pressKeyboard(e.key));
+
+// make negate and percent start new number if error
+
+// maybe make whole calc smaller
