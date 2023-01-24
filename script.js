@@ -15,6 +15,7 @@ let num1 = '';
 let num2 = '';
 let operator = '';
 let result = '';
+let maxLength = 14;
 let isCompleteNumber = false;
 let isFirstEquation = true;
 let isRepeatedEqual = false;
@@ -41,7 +42,7 @@ function divide(num1, num2) {
 function roundResult(number) {
     finalResult = Math.round(number * 1000) / 1000;
     stringResult = finalResult.toString();
-    if (stringResult.length > 14) {
+    if (stringResult.length > maxLength) {
         return 'Number is too big';
     }
     return finalResult;
@@ -82,8 +83,8 @@ function unfocusInput() {
     allButtons.forEach((button) => button.blur());
 }
 
-// code to run when a number is pressed
-function pressNumbers(e) {
+// populate numbers depending on previous display values and calculations
+function populateNumbers(e) {
     isOperationLocked = true;
 
     // if a complete number was previously entered, delete the number before populating new number
@@ -94,7 +95,7 @@ function pressNumbers(e) {
     }
 
     // populate numbers on display when clicked
-    if (displayValue.length < 14) {
+    if (displayValue.length < maxLength) {
         switch(displayText.textContent) {
             case '-0': 
                 displayText.textContent = `-${e}`;
@@ -112,8 +113,8 @@ function pressNumbers(e) {
     unfocusInput();
 }
 
-// code to run when an operator is pressed
-function pressOperators(e) {
+// populate operators depending on previous display values and calculations
+function populateOperators(e) {
     isRepeatedEqual = false;
 
     // if operator button is clicked first before a number, populate '0' to the display
@@ -161,8 +162,8 @@ function pressOperators(e) {
     unfocusInput();
 }
 
-// code to run when the equals sign is pressed
-function pressEquals() {
+// calculate values (used when equal sign is clicked)
+function calculate() {
     // if equal sign is pressed after only entering one number, don't run any code
     if (isFirstEquation) {
         return;
@@ -190,9 +191,8 @@ function pressEquals() {
     unfocusInput();
 }
 
-// code to run when the AC button is pressed 
-function pressClear() {
-    // reset all variables to default
+// clear all values and set variables to default
+function clear() {
     displayValue = '0';
     num1 = '';
     num2 = '';
@@ -206,11 +206,11 @@ function pressClear() {
     unfocusInput();
 }
 
-// code to run when the backspace button is pressed
-function pressBackspace() {
+// delete last number on display (used when backspace is clicked)
+function deleteNumber() {
     // clear all variables if backspace on error
     if (displayText.textContent == "Number is too big" || displayText.textContent == "Can't divide by 0") {
-        pressClear();
+        clear();
         return;
     }
 
@@ -220,11 +220,11 @@ function pressBackspace() {
     unfocusInput();
 }
 
-// code to run when the percent button is pressed
-function pressPercent() {
+// convert number on the display to a percentage depending on current display value
+function addPercentage() {
     // start over with '0' if pressed after error
     if (displayText.textContent == "Number is too big" || displayText.textContent == "Can't divide by 0") {
-        pressClear();
+        clear();
         displayText.textContent = '0';
         return;
     }
@@ -232,7 +232,7 @@ function pressPercent() {
     // convert the number on the display to a percentage OR display 'Number is too big' if greater than 14 #'s
     let tempPercent = displayText.textContent / 100;
     displayValue = tempPercent.toString();
-    if (displayValue.length > 14) {
+    if (displayValue.length > maxLength) {
         displayText.textContent = "Number is too big";
         equationText.textContent = '';
         isCompleteNumber = true;
@@ -243,11 +243,11 @@ function pressPercent() {
     unfocusInput();
 }
 
-// code to run when the negate button is pressed
-function pressNegate() {
+// convert number on the display to postive/negative number depending on current display value
+function addNegation() {
     // start over with '-0' if pressed after error
     if (displayText.textContent == "Number is too big" || displayText.textContent == "Can't divide by 0") {
-        pressClear();
+        clear();
         displayText.textContent = '-0';
         return;
     }
@@ -273,11 +273,11 @@ function pressNegate() {
     unfocusInput();
 }
 
-// code to run when the decimal button is pressed
-function pressDecimal() {
+// add decimal point to number on display value
+function addDecimal() {
     // start over with '0.' if pressed after error
     if (displayText.textContent == "Number is too big" || displayText.textContent == "Can't divide by 0") {
-        pressClear();
+        clear();
         displayText.textContent = '0.';
         return;
     }
@@ -303,22 +303,20 @@ function pressDecimal() {
 function pressKeyboard(e) {
     // runs appropriate function depending on which button was pressed
     if (e >= 0 && e <= 9) {
-        pressNumbers(e);
+        populateNumbers(e);
     }
     if (e == '/' || e == '*' || e == '-' || e == '+') {
-        pressOperators(e);
+        populateOperators(e);
     }
     if (e == 'Enter') {
-        pressEquals();
+     calculate();
     }
     if (e == 'Backspace') {
-        pressBackspace();
+        deleteNumber();
     }
     if (e == '.') {
-        pressDecimal();
-    }let string = '15';
-
-    console.log(string.length);
+        addDecimal();
+    }
 
     // adds button clicking animation when button is pressed on keyboard
     for (const button of allButtons.values()) {
@@ -329,16 +327,12 @@ function pressKeyboard(e) {
     }
 }
 
-numberButtons.forEach((button) => button.addEventListener('click', (e) => pressNumbers(e.target.textContent)));
-operatorButtons.forEach((button) => button.addEventListener('click', (e) => pressOperators(e.target.textContent)));
-equalButton.addEventListener('click', pressEquals);
-allClearButton.addEventListener('click', pressClear);
-backspaceButton.addEventListener('click', pressBackspace);
-percentButton.addEventListener('click', pressPercent);
-negateButton.addEventListener('click', pressNegate);
-decimalButton.addEventListener('click', pressDecimal);
+numberButtons.forEach((button) => button.addEventListener('click', (e) => populateNumbers(e.target.textContent)));
+operatorButtons.forEach((button) => button.addEventListener('click', (e) => populateOperators(e.target.textContent)));
+equalButton.addEventListener('click', calculate);
+allClearButton.addEventListener('click', clear);
+backspaceButton.addEventListener('click', deleteNumber);
+percentButton.addEventListener('click', addPercentage);
+negateButton.addEventListener('click', addNegation);
+decimalButton.addEventListener('click', addDecimal);
 document.addEventListener('keydown', (e) => pressKeyboard(e.key));
-
-// make negate and percent start new number if error
-
-// maybe make whole calc smaller
