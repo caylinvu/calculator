@@ -112,9 +112,6 @@ function pressNumbers(e) {
     unfocusInput();
 }
 
-
-
-
 // code to run when an operator is pressed
 function pressOperators(e) {
     isRepeatedEqual = false;
@@ -218,6 +215,7 @@ function pressBackspace() {
     }
     // delete the last number in the string on the display
     displayText.textContent = displayText.textContent.slice(0, (displayText.textContent.length - 1));
+    displayValue = displayText.textContent.toString();
     unfocusInput();
 }
 
@@ -316,4 +314,6 @@ negateButton.addEventListener('click', pressNegate);
 decimalButton.addEventListener('click', pressDecimal);
 document.addEventListener('keydown', (e) => pressKeyboard(e.key));
 
-// TO DO - if error, don't let backspace
+// fix issue when typing in max #'s then backspacing
+
+// make display a little longer
