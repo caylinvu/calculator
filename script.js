@@ -242,6 +242,10 @@ function pressNegate() {
     if (!displayText.textContent || displayText.textContent == '0') {
         displayText.textContent = '-0';
         isCompleteNumber = false;
+    } else if (displayText.textContent == '0.') {
+        displayText.textContent = '-0.';
+    } else if (displayText.textContent.endsWith('.')) {
+        displayText.textContent = -(displayText.textContent) + ".";
     } else if (displayText.textContent == '-') {
         displayText.textContent = '0';
     } else if (isCompleteNumber && isFirstEquation) {
@@ -311,9 +315,5 @@ percentButton.addEventListener('click', pressPercent);
 negateButton.addEventListener('click', pressNegate);
 decimalButton.addEventListener('click', pressDecimal);
 document.addEventListener('keydown', (e) => pressKeyboard(e.key));
-
-// TO DO - fix issue when typing in max numbers then backspacing
-
-// TO DO - fix decimal then negate issue
 
 // TO DO - if error, don't let backspace
