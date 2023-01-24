@@ -313,7 +313,3 @@ percentButton.addEventListener('click', pressPercent);
 negateButton.addEventListener('click', pressNegate);
 decimalButton.addEventListener('click', pressDecimal);
 document.addEventListener('keydown', (e) => pressKeyboard(e.key));
-
-// fix issue when typing in max #'s then backspacing
-
-// make display a little longer
