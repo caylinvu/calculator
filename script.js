@@ -224,13 +224,20 @@ function pressPercent() {
     // convert the number on the display to a percentage OR display 'Number is too big' if greater than 14 #'s
     let tempPercent = displayText.textContent / 100;
     displayValue = tempPercent.toString();
-    if (displayValue.length < 14) {
+    if (displayValue.length > 14) {
+        displayText.textContent = "Number is too big";
+        isCompleteNumber = true;
+        isFirstEquation = true;
+    } else {
+        displayText.textContent = tempPercent;
+    }
+/*     if (displayValue.length < 14) {
         displayText.textContent = tempPercent;
     } else {
         displayText.textContent = "Number is too big";
         isCompleteNumber = true;
         isFirstEquation = true;
-    }
+    } */
     unfocusInput();
 }
 
@@ -293,7 +300,9 @@ function pressKeyboard(e) {
     }
     if (e == '.') {
         pressDecimal();
-    }
+    }let string = '15';
+
+    console.log(string.length);
 
     // adds button clicking animation when button is pressed on keyboard
     for (const button of allButtons.values()) {
