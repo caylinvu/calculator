@@ -211,6 +211,11 @@ function pressClear() {
 
 // code to run when the backspace button is pressed
 function pressBackspace() {
+    // clear all variables if backspace on error
+    if (displayText.textContent == "Number is too big" || displayText.textContent == "Can't divide by 0") {
+        pressClear();
+        return;
+    }
     // delete the last number in the string on the display
     displayText.textContent = displayText.textContent.slice(0, (displayText.textContent.length - 1));
     unfocusInput();
@@ -221,7 +226,6 @@ function pressPercent() {
     // convert the number on the display to a percentage OR display 'Number is too big' if greater than 14 #'s
     let tempPercent = displayText.textContent / 100;
     displayValue = tempPercent.toString();
-    console.log(displayValue);
     if (displayValue.length < 14) {
         displayText.textContent = tempPercent;
     } else {
@@ -307,8 +311,6 @@ percentButton.addEventListener('click', pressPercent);
 negateButton.addEventListener('click', pressNegate);
 decimalButton.addEventListener('click', pressDecimal);
 document.addEventListener('keydown', (e) => pressKeyboard(e.key));
-
-// TO DO - fix percentage error 
 
 // TO DO - fix issue when typing in max numbers then backspacing
 
