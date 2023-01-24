@@ -41,29 +41,40 @@ function divide(num1, num2) {
 function roundResult(number) {
     finalResult = Math.round(number * 1000) / 1000;
     stringResult = finalResult.toString();
-    if (stringResult.length > 14) return 'Number is too big';
+    if (stringResult.length > 14) {
+        return 'Number is too big';
+    }
     return finalResult;
 }
 
 // choose correct operation function and return result
 function operate(operator, num1, num2) {
-    if (operator === '+') {
-        tempResult = add(num1, num2);
-    } else if (operator === '-') {
-        tempResult = subtract(num1, num2);
-    } else if (operator === 'x') {
-        tempResult = multiply(num1, num2);
-    } else if (operator === '/') {
-        if (num2 == '0') return "Can't divide by 0";
-        tempResult = divide(num1, num2);
+    switch(operator) {
+        case '+':
+            tempResult = add(num1, num2);
+            break;
+        case '-':
+            tempResult = subtract(num1, num2);
+            break;
+        case 'x':
+            tempResult = multiply(num1, num2);
+            break;
+        case '/':
+            if (num2 == '0') {
+                return "Can't divide by 0";
+            }
+            tempResult = divide(num1, num2);
+            break;
     }
     return roundResult(tempResult);
 }
 
 // use 'x' as operator if user enters '*' on keyboard
 function isStar (operator) {
-    if (operator == '*') return 'x';
-    else return operator;
+    if (operator == '*') {
+        return 'x';
+    }
+    return operator;
 }
 
 // unfocus buttons after clicking on them with mouse (so that pressing enter on the keyboard won't click them again)
@@ -84,18 +95,25 @@ function pressNumbers(e) {
 
     // populate numbers on display when clicked
     if (displayValue.length < 14) {
-        if (displayText.textContent == '-0') {
-            displayText.textContent = `-${e}`;
-        } else if (displayText.textContent == '0') {
-            displayText.textContent = e;
-        } else {
-            displayText.textContent += e;
-            displayValue = displayText.textContent.toString();
+        switch(displayText.textContent) {
+            case '-0': 
+                displayText.textContent = `-${e}`;
+                break;
+            case '0':
+                displayText.textContent = e;
+                break;
+            default:
+                displayText.textContent += e;
+                displayValue = displayText.textContent.toString();
+                break;
         }
     }
 
     unfocusInput();
 }
+
+
+
 
 // code to run when an operator is pressed
 function pressOperators(e) {
@@ -139,7 +157,9 @@ function pressOperators(e) {
         equationText.textContent = '';
         isFirstEquation = true;
         result = '';
-    } else equationText.textContent = num1 + " " + operator;
+    } else {
+        equationText.textContent = num1 + " " + operator;
+    }
 
     unfocusInput();
 }
@@ -147,7 +167,9 @@ function pressOperators(e) {
 // code to run when the equals sign is pressed
 function pressEquals() {
     // if equal sign is pressed after only entering one number, don't run any code
-    if (isFirstEquation) return;
+    if (isFirstEquation) {
+        return;
+    }
 
     // if equal sign is pressed assign num2 and calculate result (won't allow equal sign to repeatedly be clicked after performing a calculation)
     if (!isRepeatedEqual) {
@@ -160,7 +182,9 @@ function pressEquals() {
             result = '';
         } else if (tempNum2.includes("-")) {
             equationText.textContent += " (" + num2 + ") =";
-        } else equationText.textContent += " " + num2 + " =";
+        } else {
+            equationText.textContent += " " + num2 + " =";
+        }
     } 
 
     isFirstEquation = true;
@@ -194,8 +218,17 @@ function pressBackspace() {
 
 // code to run when the percent button is pressed
 function pressPercent() {
-    // convert the number on the display to a percentage
-    displayText.textContent = displayText.textContent / 100;
+    // convert the number on the display to a percentage OR display 'Number is too big' if greater than 14 #'s
+    let tempPercent = displayText.textContent / 100;
+    displayValue = tempPercent.toString();
+    console.log(displayValue);
+    if (displayValue.length < 14) {
+        displayText.textContent = tempPercent;
+    } else {
+        displayText.textContent = "Number is too big";
+        isCompleteNumber = true;
+        isFirstEquation = true;
+    }
     unfocusInput();
 }
 
@@ -240,11 +273,21 @@ function pressDecimal() {
 // code to run when a button is pressed on the keyboard
 function pressKeyboard(e) {
     // runs appropriate function depending on which button was pressed
-    if (e >= 0 && e <= 9) pressNumbers(e);
-    if (e == '/' || e == '*' || e == '-' || e == '+') pressOperators(e);
-    if (e == 'Enter') pressEquals();
-    if (e == 'Backspace') pressBackspace();
-    if (e == '.') pressDecimal();
+    if (e >= 0 && e <= 9) {
+        pressNumbers(e);
+    }
+    if (e == '/' || e == '*' || e == '-' || e == '+') {
+        pressOperators(e);
+    }
+    if (e == 'Enter') {
+        pressEquals();
+    }
+    if (e == 'Backspace') {
+        pressBackspace();
+    }
+    if (e == '.') {
+        pressDecimal();
+    }
 
     // adds button clicking animation when button is pressed on keyboard
     for (const button of allButtons.values()) {
@@ -264,3 +307,11 @@ percentButton.addEventListener('click', pressPercent);
 negateButton.addEventListener('click', pressNegate);
 decimalButton.addEventListener('click', pressDecimal);
 document.addEventListener('keydown', (e) => pressKeyboard(e.key));
+
+// TO DO - fix percentage error 
+
+// TO DO - fix issue when typing in max numbers then backspacing
+
+// TO DO - fix decimal then negate issue
+
+// TO DO - if error, don't let backspace
